@@ -1,14 +1,14 @@
 ## Generating Knowledge Graphs from Unstructured Texts
 
 In our paper we present a technique to generate triples encoding
-a compatibility relation between products and consumer items, by
+compatibility relations between products and consumer items, by
 extracting natural language entities and intents from Q&A pairs.
 
-Consider the example:
-```text
+Consider the question and answer pair about a product:
+```yaml
 ID: 11
-Q:  Does this product fit in fusion 2019?
-A:  Yes, is does.
+Question:  Does this product fit in fusion 2019?
+Answer:    Yes, it does.
 ```
 This shows that a product, with ID *11*, is compatible with a car, *fusion 2019*. 
 The presented algorithm generates the following graph:
@@ -64,10 +64,11 @@ where {
 
 ## Sample of the Knowledge Graph
 
-You can download the [Turtle document](https://raw.githubusercontent.com/rodrigocaus/ecommerce-kgqa/gh-pages/ttl/nliwod_2020_gobots.ttl){:target="_blank"} sampled from the generated KG referred on the paper.
+You can download the [Turtle document](https://raw.githubusercontent.com/rodrigocaus/ecommerce-kgqa/gh-pages/ttl/nliwod_2020_gobots.ttl){:target="_blank"} 
+sampled from the generated KG referred to in the paper.
 
 ### Contact
 
 Project maintained by [Diogo](https://github.com/diogoteles08) and [Rodrigo](https://github.com/rodrigocaus)
 
-Powered by [GoBots](https://gobots.ai/)
+Powered by [GoBots](https://gobots.ai/){:target="_blank"}
