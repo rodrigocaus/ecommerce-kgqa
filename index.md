@@ -1,37 +1,73 @@
-## Welcome to GitHub Pages
+## Generating Knowledge Graphs from Unstructured Texts
 
-You can use the [editor on GitHub](https://github.com/rodrigocaus/ecommerce-kgqa.github.io/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+In our paper we present a technique to generate triples encoding
+a compatibility relation between products and consumer items, by
+extracting natural language entities and intents from Q&A pairs.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+Consider the example:
+```text
+ID: 11
+Q:  Does this product fit in fusion 2019?
+A:  Yes, is does.
+```
+This shows that a product, with ID *11*, is compatible with a car, *fusion 2019*. 
+The presented algorithm generates the following graph:
 
-### Markdown
+![example](img/example_graph.png)
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+## Quering Knowledge with SPARQL
 
-```markdown
-Syntax highlighted code block
+To list all knowledge in an easy to read format:
+```sparql
+prefix onto:<gobots://research/2020/nliwod/knowledgebase/ontology#>
 
-# Header 1
-## Header 2
-### Header 3
+select ?id ?compatibility_type ?model ?year ?ans
+where {
+    ?product rdf:type onto:MLProduct;
+             onto:hasSKU ?id;
+             onto:hasCompatibility ?compatibility.
+    ?compatibility rdf:type ?compatibility_type;
+                   onto:attendantAnswer ?ans;
+                   onto:compatibleWith ?car.
+    ?car rdf:type onto:Car;
+         onto:hasModel ?model;
+         onto:hasModelYear ?year.
+}
+```
+The result will look like the table:
 
-- Bulleted
-- List
+| id   | compatibility_type                                                     | model     | year | ans                                    |
+|------|------------------------------------------------------------------------|-----------|------|----------------------------------------|
+| "01" | gobots://research/2020/nliwod/knowledgebase/ontology#FullCompatibility | "fusion"  | 2011 | "will fit perfectly"                   |
+| "13" | gobots://research/2020/nliwod/knowledgebase/ontology#FullCompatibility | "corolla" | 2020 | "yes it does"                          |
+| "42" | gobots://research/2020/nliwod/knowledgebase/ontology#FullCompatibility | "fiesta"  | 2015 | "the advertised product is compatible" |
 
-1. Numbered
-2. List
+To query for the answer of extracted compatibility between product 
+ID **42** and the car **fiesta**, year **2015**:
 
-**Bold** and _Italic_ and `Code` text
+```sparql
+prefix onto:<gobots://research/2020/nliwod/knowledgebase/ontology#>
 
-[Link](url) and ![Image](src)
+select ?compatibility_type ?ans
+where {
+    ?product rdf:type onto:MLProduct;
+             onto:hasSKU "42";
+             onto:hasCompatibility ?compatibility.
+    ?compatibility rdf:type ?compatibility_type;
+                   onto:attendantAnswer ?ans;
+                   onto:compatibleWith ?car.
+    ?car rdf:type onto:Car;
+         onto:hasModel "fiesta";
+         onto:hasModelYear 2015 .
+}
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+## Sample of the Knowledge Graph
 
-### Jekyll Themes
+You can download the [Turtle document](https://raw.githubusercontent.com/rodrigocaus/ecommerce-kgqa/gh-pages/ttl/nliwod_2020_gobots.ttl){:target="_blank"} sampled from the generated KG referred on the paper.
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/rodrigocaus/ecommerce-kgqa.github.io/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+### Contact
 
-### Support or Contact
+Project maintained by [Diogo](https://github.com/diogoteles08) and [Rodrigo](https://github.com/rodrigocaus)
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+Powered by [GoBots](https://gobots.ai/)
