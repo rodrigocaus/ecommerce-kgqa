@@ -3,6 +3,7 @@
 In our paper we present a technique to generate triples encoding
 compatibility relations between products and consumer items, by
 extracting natural language entities and intents from Q&A pairs.
+You can access the full text [here](http://ceur-ws.org/Vol-2722/nliwod2020-paper-3.pdf){:target="_blank"}.
 
 Consider the question and answer pair about a product:
 ```yaml
